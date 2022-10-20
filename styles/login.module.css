@@ -5,9 +5,57 @@
 
 .leftContainer {
   flex: 2;
-  background-color: aqua;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  padding: 30px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  /* https://unsplash.com/photos/36TSQemRAxo */
+  background: linear-gradient(45deg, #3e37ff00, #3e37ffc2),
+    url('https://images.unsplash.com/photo-1645181196184-3ae5bf3fc91d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=435&q=80');
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .rightContainer {
   flex: 1;
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.title {
+  margin-top: 50px;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 50px !important;
+}
+.subtitle {
+  margin-top: 20px;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.titleForm {
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.subtitleForm {
+  font-weight: 500;
+}
+
+.margin {
+  margin-top: 15px;
+}
+
+.btn {
+  margin-top: 20px;
+  width: 100% !important;
 }
