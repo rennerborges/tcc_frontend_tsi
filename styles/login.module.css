@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.leftContainer {
+  flex: 2;
+  background-color: aqua;
+}
+
+.rightContainer {
+  flex: 1;
+}
