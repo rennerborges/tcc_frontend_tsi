@@ -4,13 +4,11 @@ import Timer from './components/timer';
 import { useState, useContext } from 'react';
 import { LoginRequest } from '../../api';
 import { toast } from 'react-toastify';
-import { AuthContext } from '../../contexts/auth';
 import { useRouter } from 'next/router';
 
 export default function LoginPage() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
-  const authContext = useContext(AuthContext);
   const router = useRouter();
 
   const onSubmit = async (event) => {
@@ -21,9 +19,6 @@ export default function LoginPage() {
         email: user,
         password,
       });
-
-      authContext.setAuthState(token);
-      // router.push('/');
     } catch (error) {
       toast.error(error.message, {
         position: 'top-right',
