@@ -1,8 +1,43 @@
 import styles from '../../../styles/login.module.css';
 import { Text, Input, Button } from '@nextui-org/react';
 import Timer from './components/timer';
+import { useState, useContext } from 'react';
+import { LoginRequest } from '../../api';
+import { toast } from 'react-toastify';
+import { AuthContext } from '../../contexts/auth';
+import { useRouter } from 'next/router';
 
 export default function LoginPage() {
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
+  const authContext = useContext(AuthContext);
+  const router = useRouter();
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const { token } = await LoginRequest({
+        email: user,
+        password,
+      });
+
+      authContext.setAuthState(token);
+      // router.push('/');
+    } catch (error) {
+      toast.error(error.message, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    }
+  };
+
   return (
     <section className={styles.container}>
       <section className={styles.leftContainer}>
@@ -25,8 +60,13 @@ export default function LoginPage() {
           Realize seu login para continuar
         </Text>
 
-        <form>
+        <form onSubmit={onSubmit}>
           <Input
+            value={user}
+            onChange={(event) => {
+              const { value } = event.target;
+              setUser(value);
+            }}
             fullWidth
             clearable
             label="Usuário"
@@ -37,14 +77,23 @@ export default function LoginPage() {
           <div className={styles.margin}></div>
 
           <Input.Password
+            value={password}
+            onChange={(event) => {
+              const { value } = event.target;
+              setPassword(value);
+            }}
             fullWidth
             clearable
-            color="default"
+            color="error"
             type="password"
             label="Senha"
+            status="error"
+            onError={true}
           />
 
-          <Button className={styles.btn}>Entrar</Button>
+          <Button type="submit" className={styles.btn}>
+            Entrar
+          </Button>
         </form>
       </section>
     </section>

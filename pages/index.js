@@ -1,12 +1,13 @@
-import Head from 'next/head';
-import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import Button from '../src/components/Button';
+import { AuthProvider } from '../src/contexts/auth';
 
 export default function Home() {
   return (
-    <div className={styles.container}>
-      <Button></Button>
-    </div>
+    <AuthProvider>
+      <div className={styles.container}>
+        <Button></Button>
+      </div>
+    </AuthProvider>
   );
 }

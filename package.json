@@ -3,17 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "build:hmg": "npm run clear && npm run env:hmg next build && next export",
+    "build:prod": "npm run clear && npm run env:prod next build && next export",
+    "env:hmg": "cross-env ACTIVE_ENV=development",
+    "env:prod": "cross-env ACTIVE_ENV=production",
+    "start": "npm run env:hmg next dev",
+    "start:prod": "npm run env:prod next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@nextui-org/react": "^1.0.0-beta.10",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
+    "env-cmd": "^10.1.0",
+    "localstorage-polyfill": "^1.0.1",
     "moment": "^2.29.4",
     "next": "12.3.1",
+    "next-images": "^1.8.4",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-toastify": "^9.0.8"
   },
   "devDependencies": {
     "eslint": "8.25.0",

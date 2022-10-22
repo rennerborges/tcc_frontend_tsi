@@ -22,7 +22,6 @@ const lightTheme = createTheme({
 
       // you can also create your own color
       myColor: '#ff4ecd',
-      white: '#FFFFFF',
 
       mygray500: '#757575',
       mygray900: '#212121',

@@ -1,7 +1,9 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
-}
+const withImages = require('next-images');
+const createEnvFile = require('./config');
 
-module.exports = nextConfig
+module.exports = withImages({
+  webpack: (config) => {
+    createEnvFile();
+    return config;
+  },
+});
