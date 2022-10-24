@@ -25,6 +25,8 @@ export default function LoginPage() {
       Cookie.set('token', token, {
         expires: addDays(new Date(), 1),
       });
+
+      router.replace('/');
     } catch (error) {
       toast.error(error.message, {
         position: 'top-right',
