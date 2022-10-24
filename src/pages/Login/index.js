@@ -1,10 +1,12 @@
 import styles from '../../../styles/login.module.css';
 import { Text, Input, Button } from '@nextui-org/react';
 import Timer from './components/timer';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { LoginRequest } from '../../api';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
+import Cookie from 'js-cookie';
+import { addDays } from 'date-fns';
 
 export default function LoginPage() {
   const [user, setUser] = useState('');
@@ -18,6 +20,10 @@ export default function LoginPage() {
       const { token } = await LoginRequest({
         email: user,
         password,
+      });
+
+      Cookie.set('token', token, {
+        expires: addDays(new Date(), 1),
       });
     } catch (error) {
       toast.error(error.message, {
