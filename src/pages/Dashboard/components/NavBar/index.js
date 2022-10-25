@@ -1,10 +1,24 @@
 import { Navbar, Button, Link, Text, useTheme, Image } from '@nextui-org/react';
+import Cookie from 'js-cookie';
 
 export default function Nav() {
   const { isDark } = useTheme();
 
+  const logout = () => {
+    Cookie.remove('token');
+  };
+
   return (
-    <Navbar isBordered={isDark} variant="static">
+    <Navbar
+      isBordered={isDark}
+      variant="static"
+      css={{
+        '& .nextui-navbar-container': {
+          maxWidth: '100%',
+          width: '100%',
+        },
+      }}
+    >
       <Navbar.Brand>
         <Text
           b
@@ -26,7 +40,14 @@ export default function Nav() {
       </Navbar.Content>
       <Navbar.Content>
         <Navbar.Item>
-          <Button auto color="error" flat as={Link} href="/login">
+          <Button
+            onClick={logout}
+            auto
+            color="error"
+            flat
+            as={Link}
+            href="/login"
+          >
             Sair
           </Button>
         </Navbar.Item>
