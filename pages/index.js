@@ -1,12 +1,8 @@
 import styles from '../styles/Home.module.css';
-import Button from '../src/components/Button';
+import Dashboard from '../src/pages/Dashboard';
 
 export default function Home() {
-  return (
-    <div className={styles.container}>
-      <Button></Button>
-    </div>
-  );
+  return <Dashboard />;
 }
 
 export const getServerSideProps = async ({ req }) => {

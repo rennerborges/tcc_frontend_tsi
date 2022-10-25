@@ -18,6 +18,14 @@ a {
   font-family: 'Outfit', sans-serif;
 }
 
+.ace_editor,
+.ace_editor * {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas',
+    monospace !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
