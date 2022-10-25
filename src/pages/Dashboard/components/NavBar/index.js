@@ -1,8 +1,13 @@
-import { Navbar, Button, Link, Text, useTheme, Image } from '@nextui-org/react';
+import { Navbar, Button, Link, Text, Row } from '@nextui-org/react';
 import Cookie from 'js-cookie';
+import { useTheme as useNextTheme } from 'next-themes';
+import { Switch, useTheme as useThemeUI } from '@nextui-org/react';
+import { MdLightMode, MdDarkMode } from 'react-icons/md';
+import styles from './styles.module.css';
 
 export default function Nav() {
-  const { isDark } = useTheme();
+  const { setTheme } = useNextTheme();
+  const { isDark, type } = useThemeUI();
 
   const logout = () => {
     Cookie.remove('token');
@@ -39,6 +44,15 @@ export default function Nav() {
         <Navbar.Link href="#">Company</Navbar.Link> */}
       </Navbar.Content>
       <Navbar.Content>
+        <Row align="center">
+          <div className={styles.iconTheme}>
+            {isDark ? <MdLightMode size={24} /> : <MdDarkMode size={24} />}
+          </div>
+          <Switch
+            checked={isDark}
+            onChange={(e) => setTheme(!isDark ? 'dark' : 'light')}
+          />
+        </Row>
         <Navbar.Item>
           <Button
             onClick={logout}

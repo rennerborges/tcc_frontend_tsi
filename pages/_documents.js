@@ -1,5 +1,5 @@
 import React from 'react';
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+import Document, { Html, Head, Main, NextScript, Title } from 'next/document';
 import { CssBaseline } from '@nextui-org/react';
 
 class MyDocument extends Document {
@@ -14,6 +14,7 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="pt-br">
+        <Title>NuPPGIN</Title>
         <Head>{CssBaseline.flush()}</Head>
         <body>
           <Main />

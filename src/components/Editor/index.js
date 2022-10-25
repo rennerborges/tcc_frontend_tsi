@@ -1,20 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AceEditor from 'react-ace';
 
 import 'ace-builds/src-noconflict/ace';
 import 'ace-builds/src-noconflict/mode-json';
-import 'ace-builds/src-noconflict/theme-github';
-import { useTheme } from '@nextui-org/react';
+import 'ace-builds/src-noconflict/theme-solarized_dark';
 import './styles.module.css';
 
 const Editor = () => {
-  const { isDark } = useTheme();
   return (
     <AceEditor
       placeholder="Placeholder Text"
       mode="json"
-      theme={isDark ? 'twilight' : 'kuroir'}
-      name="blah2"
+      theme="solarized_dark"
       height={300}
       width="100%"
       onChange={() => {}}
@@ -22,7 +19,7 @@ const Editor = () => {
       showPrintMargin={true}
       showGutter={true}
       highlightActiveLine={true}
-      value={JSON.stringify({ pessoa: 1 }, null, 1)}
+      value={JSON.stringify({ pessoa: 11 }, null, 1)}
       setOptions={{
         enableBasicAutocompletion: true,
         enableLiveAutocompletion: true,
