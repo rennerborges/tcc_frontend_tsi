@@ -7,6 +7,11 @@ import { MdSearch } from 'react-icons/md';
 import { GetObjects } from '../../api/index.js';
 import { useRouter } from 'next/router.js';
 import { toast } from 'react-toastify';
+import moment from 'moment';
+import 'moment/locale/pt-br';
+import Fuse from 'fuse.js';
+
+moment.locale('pt-br');
 
 const Editor = dynamic(() => import('../../components/Editor/index.js'), {
   ssr: false,
@@ -45,6 +50,36 @@ export default function Dashboard() {
     getObjects();
   }, []);
 
+  const searchObjects = () => {
+    if (!search) {
+      return objects;
+    }
+
+    const options = {
+      // isCaseSensitive: false,
+      // includeScore: false,
+      // shouldSort: true,
+      // includeMatches: false,
+      // findAllMatches: false,
+      // minMatchCharLength: 1,
+      // location: 0,
+      threshold: 0.2,
+      // distance: 100,
+      // useExtendedSearch: false,
+      // ignoreLocation: false,
+      // ignoreFieldNorm: false,
+      // fieldNormWeight: 1,
+      keys: ['code', 'name', 'createdBy'],
+    };
+
+    const fuse = new Fuse(objects, options);
+
+    const filter = fuse.search(search);
+    console.log('filter:', filter);
+
+    return filter.map(({ item }) => item);
+  };
+
   return (
     <section>
       <Nav />
@@ -70,12 +105,12 @@ export default function Dashboard() {
         </Row>
         {console.log('objects', objects)}
         <Collapse.Group>
-          {objects.map((object) => (
+          {searchObjects().map((object) => (
             <Collapse
               key={object._id}
               title={
                 <Col>
-                  <Row>
+                  <Row align="center">
                     <Text
                       b
                       size={20}
@@ -83,10 +118,26 @@ export default function Dashboard() {
                     >
                       {object.name}
                     </Text>
+                    <Text
+                      size={16}
+                      css={{
+                        marginLeft: '10px !important',
+                        color: '$accents6',
+                      }}
+                    >
+                      {`#${object.code}`}
+                    </Text>
                   </Row>
                   <Row>
                     <Text size={16} css={{ color: '$accents6' }}>
-                      {`${object.createdBy} ${object.createdAt}`}
+                      {`Criado por ${object.createdBy} em ${moment(
+                        object.createdAt
+                      ).format('LL')}`}
+                    </Text>
+                  </Row>
+                  <Row>
+                    <Text size={16} css={{ color: '$accents6' }}>
+                      {}
                     </Text>
                   </Row>
                 </Col>
