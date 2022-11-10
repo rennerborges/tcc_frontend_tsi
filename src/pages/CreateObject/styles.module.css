@@ -1,0 +1,11 @@
+.container {
+  padding: 20px;
+  box-sizing: border-box;
+  margin-top: 20px;
+}
+
+.containerBtn {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}

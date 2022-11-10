@@ -4,10 +4,13 @@ import { useTheme as useNextTheme } from 'next-themes';
 import { Switch, useTheme as useThemeUI } from '@nextui-org/react';
 import { MdLightMode, MdDarkMode } from 'react-icons/md';
 import styles from './styles.module.css';
+import { useRouter } from 'next/router';
 
 export default function Nav() {
   const { setTheme } = useNextTheme();
   const { isDark, type } = useThemeUI();
+
+  const router = useRouter();
 
   const logout = () => {
     Cookie.remove('token');
@@ -30,7 +33,10 @@ export default function Nav() {
           color="inherit"
           hideIn="xs"
           size={20}
-          css={{ color: '$primary' }}
+          css={{ color: '$primary', cursor: 'pointer' }}
+          onClick={() => {
+            router.replace('/');
+          }}
         >
           NuPPGIN
         </Text>

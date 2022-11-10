@@ -1,5 +1,5 @@
-import { Text, Collapse, Col, Row, Input } from '@nextui-org/react';
-import Nav from './components/NavBar/index.js';
+import { Text, Collapse, Col, Row, Input, Button } from '@nextui-org/react';
+import Nav from '../../components/NavBar';
 import styles from './styles.module.css';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
@@ -88,7 +88,19 @@ export default function Dashboard() {
           <Text b size={25} css={{ color: '$accents9' }}>
             Seus objetos
           </Text>
+
           <Row align="center" fluid={false}>
+            <Button
+              css={{
+                minWidth: 120,
+                marginRight: 15,
+              }}
+              onClick={() => {
+                router.push('/createObject');
+              }}
+            >
+              Criar
+            </Button>
             <Input
               value={search}
               onChange={(event) => {
@@ -146,7 +158,11 @@ export default function Dashboard() {
               <Text b size={20} css={{ tt: 'capitalize', color: '$accents9' }}>
                 Objeto:
               </Text>
-              <Editor value={object.data} readOnly onChange={() => {}} />
+              <Editor
+                value={JSON.stringify(object.data, null, 1)}
+                readOnly
+                onChange={() => {}}
+              />
               <Text
                 b
                 size={20}
@@ -159,7 +175,11 @@ export default function Dashboard() {
               >
                 Model:
               </Text>
-              <Editor value={object.model} readOnly onChange={() => {}} />
+              <Editor
+                value={JSON.stringify(object.model, null, 1)}
+                readOnly
+                onChange={() => {}}
+              />
             </Collapse>
           ))}
         </Collapse.Group>

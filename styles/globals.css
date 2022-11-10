@@ -26,6 +26,11 @@ a {
   letter-spacing: 0 !important;
 }
 
+.error-marker {
+  background-color: #9300006e;
+  position: absolute;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
