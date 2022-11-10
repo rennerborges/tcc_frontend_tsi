@@ -75,6 +75,12 @@ export const GetObjects = async () => {
   return Get('/objects');
 };
 
+export const CreateObject = async (body) => {
+  return Post('/objects', body);
+};
+
 export default {
   LoginRequest,
+  GetObjects,
+  CreateObject,
 };

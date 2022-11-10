@@ -4,12 +4,13 @@ import styles from './styles.module.css';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { MdSearch } from 'react-icons/md';
-import { GetObjects } from '../../api/index.js';
+import { CreateObject, GetObjects } from '../../api/index.js';
 import { useRouter } from 'next/router.js';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 import Fuse from 'fuse.js';
+import { th } from 'date-fns/locale';
 
 moment.locale('pt-br');
 
@@ -24,8 +25,78 @@ export default function Dashboard() {
   const [object, setObject] = useState('{}');
   const [schema, setSchema] = useState('{}');
 
-  const formatObjectString = (json) => JSON.stringify(json, null, 1);
+  const isValidForm = () => {
+    try {
+      if (!name) {
+        throw 'Informe o nome';
+      }
 
+      try {
+        JSON.parse(object);
+      } catch (error) {
+        throw 'Informe um Objeto válido';
+      }
+
+      try {
+        JSON.parse(schema);
+      } catch (error) {
+        throw 'Informe um Model válido';
+      }
+
+      return true;
+    } catch (error) {
+      toast.error(error, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+
+      return false;
+    }
+  };
+
+  const createObject = async () => {
+    try {
+      if (!isValidForm()) {
+        return;
+      }
+
+      await CreateObject({
+        name,
+        data: JSON.parse(object),
+        model: JSON.parse(schema),
+      });
+
+      toast.success('Objeto criado com sucesso!', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+
+      router.replace('/');
+    } catch (error) {
+      toast.error(error.message, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    }
+  };
   return (
     <section>
       <Nav />
@@ -69,7 +140,6 @@ export default function Dashboard() {
         <Editor
           value={object}
           onChange={(value, e) => {
-            console.log('value', value);
             setObject(value);
           }}
         />
@@ -91,7 +161,9 @@ export default function Dashboard() {
           }}
         />
         <section className={styles.containerBtn}>
-          <Button type="submit">Salvar</Button>
+          <Button type="submit" onClick={createObject}>
+            Salvar
+          </Button>
         </section>
       </section>
     </section>
