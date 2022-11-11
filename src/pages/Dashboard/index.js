@@ -10,6 +10,9 @@ import { toast } from 'react-toastify';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 import Fuse from 'fuse.js';
+import { downloadTextFile } from '../../utils/json';
+import { AiOutlineCloudDownload } from 'react-icons/ai';
+import ShowObject from './components/ShowObject';
 
 moment.locale('pt-br');
 
@@ -75,7 +78,6 @@ export default function Dashboard() {
     const fuse = new Fuse(objects, options);
 
     const filter = fuse.search(search);
-    console.log('filter:', filter);
 
     return filter.map(({ item }) => item);
   };
@@ -115,7 +117,7 @@ export default function Dashboard() {
             <MdSearch className={styles.iconSearch} size={24} />
           </Row>
         </Row>
-        {console.log('objects', objects)}
+
         <Collapse.Group>
           {searchObjects().map((object) => (
             <Collapse
@@ -155,30 +157,15 @@ export default function Dashboard() {
                 </Col>
               }
             >
-              <Text b size={20} css={{ tt: 'capitalize', color: '$accents9' }}>
-                Objeto:
-              </Text>
-              <Editor
-                value={JSON.stringify(object.data, null, 1)}
-                readOnly
-                onChange={() => {}}
+              <ShowObject
+                name="Object"
+                object={object.data}
+                exportName={object.name}
               />
-              <Text
-                b
-                size={20}
-                css={{
-                  display: 'block',
-                  marginTop: '15px',
-                  tt: 'capitalize',
-                  color: '$accents9',
-                }}
-              >
-                Model:
-              </Text>
-              <Editor
-                value={JSON.stringify(object.model, null, 1)}
-                readOnly
-                onChange={() => {}}
+              <ShowObject
+                name="Model"
+                object={object.model}
+                exportName={`${object.name}_model`}
               />
             </Collapse>
           ))}
