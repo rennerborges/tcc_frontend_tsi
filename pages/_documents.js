@@ -14,7 +14,6 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="pt-br">
-        <Title>NuPPGIN</Title>
         <Head>{CssBaseline.flush()}</Head>
         <body>
           <Main />
