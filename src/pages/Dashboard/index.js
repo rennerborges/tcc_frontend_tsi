@@ -10,9 +10,9 @@ import { toast } from 'react-toastify';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 import Fuse from 'fuse.js';
-import { downloadTextFile } from '../../utils/json';
-import { AiOutlineCloudDownload } from 'react-icons/ai';
 import ShowObject from './components/ShowObject';
+import SkeletonContainer from './components/SkeletonContainer';
+import NotFoundContainer from './components/NotFoundContainer';
 
 moment.locale('pt-br');
 
@@ -24,10 +24,12 @@ export default function Dashboard() {
   const router = useRouter();
 
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(false);
   const [objects, setObjects] = useState([]);
 
   const getObjects = async () => {
     try {
+      setLoading(true);
       const response = await GetObjects();
 
       setObjects(response.objects);
@@ -46,6 +48,8 @@ export default function Dashboard() {
       if (error.status === 401) {
         router.replace('/login');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -80,6 +84,71 @@ export default function Dashboard() {
     const filter = fuse.search(search);
 
     return filter.map(({ item }) => item);
+  };
+
+  const renderItens = (itens) => {
+    if (loading) {
+      return <SkeletonContainer />;
+    }
+
+    if (!itens.length) {
+      return <NotFoundContainer />;
+    }
+
+    return (
+      <Collapse.Group>
+        {itens.map((object) => (
+          <Collapse
+            key={object._id}
+            title={
+              <Col>
+                <Row align="center">
+                  <Text
+                    b
+                    size={20}
+                    css={{ tt: 'capitalize', color: '$accents8' }}
+                  >
+                    {object.name}
+                  </Text>
+                  <Text
+                    size={16}
+                    css={{
+                      marginLeft: '10px !important',
+                      color: '$accents6',
+                    }}
+                  >
+                    {`#${object.code}`}
+                  </Text>
+                </Row>
+                <Row>
+                  <Text size={16} css={{ color: '$accents6' }}>
+                    {`Criado por ${object.createdBy} em ${moment(
+                      object.createdAt
+                    ).format('LL')}`}
+                  </Text>
+                </Row>
+                <Row>
+                  <Text size={16} css={{ color: '$accents6' }}>
+                    {}
+                  </Text>
+                </Row>
+              </Col>
+            }
+          >
+            <ShowObject
+              name="Object"
+              object={object.data}
+              exportName={object.name}
+            />
+            <ShowObject
+              name="Model"
+              object={object.model}
+              exportName={`${object.name}_model`}
+            />
+          </Collapse>
+        ))}
+      </Collapse.Group>
+    );
   };
 
   return (
@@ -118,58 +187,7 @@ export default function Dashboard() {
           </Row>
         </Row>
 
-        <Collapse.Group>
-          {searchObjects().map((object) => (
-            <Collapse
-              key={object._id}
-              title={
-                <Col>
-                  <Row align="center">
-                    <Text
-                      b
-                      size={20}
-                      css={{ tt: 'capitalize', color: '$accents8' }}
-                    >
-                      {object.name}
-                    </Text>
-                    <Text
-                      size={16}
-                      css={{
-                        marginLeft: '10px !important',
-                        color: '$accents6',
-                      }}
-                    >
-                      {`#${object.code}`}
-                    </Text>
-                  </Row>
-                  <Row>
-                    <Text size={16} css={{ color: '$accents6' }}>
-                      {`Criado por ${object.createdBy} em ${moment(
-                        object.createdAt
-                      ).format('LL')}`}
-                    </Text>
-                  </Row>
-                  <Row>
-                    <Text size={16} css={{ color: '$accents6' }}>
-                      {}
-                    </Text>
-                  </Row>
-                </Col>
-              }
-            >
-              <ShowObject
-                name="Object"
-                object={object.data}
-                exportName={object.name}
-              />
-              <ShowObject
-                name="Model"
-                object={object.model}
-                exportName={`${object.name}_model`}
-              />
-            </Collapse>
-          ))}
-        </Collapse.Group>
+        {renderItens(searchObjects())}
       </section>
     </section>
   );
