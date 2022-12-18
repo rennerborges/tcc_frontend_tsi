@@ -35,6 +35,39 @@ const Post = async (url, body) => {
   return response;
 };
 
+const Patch = async (url, body) => {
+  const myInit = {
+    method: 'PATCH',
+    headers,
+    body: JSON.stringify(body),
+  };
+
+  const token = Cookie.get('token');
+
+  if (token) {
+    myInit.headers.token = token;
+  }
+
+  const req = await fetch(`${baseUrl}${url}`, myInit);
+
+  let response;
+  try {
+    response = await req.json();
+  } catch (error) {
+    response = req;
+  }
+
+  if (req.status === 401) {
+    logout(req, response);
+  }
+
+  if (!req.ok) {
+    throw { status: req.status, message: response?.message };
+  }
+
+  return response;
+};
+
 const Get = async (url) => {
   const myInit = {
     method: 'GET',
@@ -56,7 +89,7 @@ const Get = async (url) => {
   }
 
   if (!req.ok) {
-    throw { status: req.status, message: response?.message };
+    throw { status: req.status, message: response?.message || response };
   }
 
   return response;
@@ -75,12 +108,22 @@ export const GetObjects = async () => {
   return Get('/objects');
 };
 
+export const GetObjectById = async (id) => {
+  return Get(`/objects/${id}`);
+};
+
 export const CreateObject = async (body) => {
   return Post('/objects', body);
+};
+
+export const UpdateObject = async (id, body) => {
+  return Patch(`/objects/${id}`, body);
 };
 
 export default {
   LoginRequest,
   GetObjects,
+  GetObjectById,
   CreateObject,
+  UpdateObject,
 };
