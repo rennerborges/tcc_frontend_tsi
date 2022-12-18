@@ -20,6 +20,7 @@ import Fuse from 'fuse.js';
 import ShowObject from './components/ShowObject';
 import SkeletonContainer from './components/SkeletonContainer';
 import NotFoundContainer from './components/NotFoundContainer';
+import ConfirmModal from '../../components/ConfirmModal';
 
 moment.locale('pt-br');
 
@@ -29,6 +30,7 @@ export default function Dashboard() {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
   const [objects, setObjects] = useState([]);
+  const [idDelete, setIdDelete] = useState(0);
 
   const getObjects = async () => {
     try {
@@ -85,6 +87,18 @@ export default function Dashboard() {
     });
   };
 
+  const deleteObjectAction = (event, id) => {
+    event.stopPropagation();
+    setIdDelete(id);
+  };
+
+  const deleteObject = (confirm) => {
+    console.log(confirm);
+    if (!confirm) {
+      setIdDelete(0);
+    }
+  };
+
   const renderItens = (itens) => {
     if (loading) {
       return <SkeletonContainer />;
@@ -135,7 +149,10 @@ export default function Dashboard() {
                   className={styles.containerIconsAction}
                 >
                   <Tooltip content={'Apagar'} rounded color="error">
-                    <MdDelete className={styles.iconAction} />
+                    <MdDelete
+                      onClick={(event) => deleteObjectAction(event, object._id)}
+                      className={styles.iconAction}
+                    />
                   </Tooltip>
                   <Tooltip content={'Editar'} rounded color="primary">
                     <MdEdit
@@ -201,6 +218,7 @@ export default function Dashboard() {
 
         {renderItens(searchObjects())}
       </section>
+      <ConfirmModal open={Boolean(idDelete)} onClose={deleteObject} />
     </section>
   );
 }
