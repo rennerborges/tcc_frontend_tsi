@@ -1,11 +1,18 @@
-import { Text, Collapse, Col, Row, Input, Button } from '@nextui-org/react';
+import {
+  Text,
+  Collapse,
+  Col,
+  Row,
+  Input,
+  Button,
+  Tooltip,
+} from '@nextui-org/react';
 import Nav from '../../components/NavBar';
 import styles from './styles.module.css';
-import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
-import { MdSearch } from 'react-icons/md';
+import { MdSearch, MdEdit, MdDelete } from 'react-icons/md';
 import { GetObjects } from '../../api/index.js';
-import { useRouter } from 'next/router.js';
+import Router, { useRouter } from 'next/router.js';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import 'moment/locale/pt-br';
@@ -15,10 +22,6 @@ import SkeletonContainer from './components/SkeletonContainer';
 import NotFoundContainer from './components/NotFoundContainer';
 
 moment.locale('pt-br');
-
-const Editor = dynamic(() => import('../../components/Editor/index.js'), {
-  ssr: false,
-});
 
 export default function Dashboard() {
   const router = useRouter();
@@ -63,19 +66,7 @@ export default function Dashboard() {
     }
 
     const options = {
-      // isCaseSensitive: false,
-      // includeScore: false,
-      // shouldSort: true,
-      // includeMatches: false,
-      // findAllMatches: false,
-      // minMatchCharLength: 1,
-      // location: 0,
       threshold: 0.2,
-      // distance: 100,
-      // useExtendedSearch: false,
-      // ignoreLocation: false,
-      // ignoreFieldNorm: false,
-      // fieldNormWeight: 1,
       keys: ['code', 'name', 'createdBy'],
     };
 
@@ -84,6 +75,14 @@ export default function Dashboard() {
     const filter = fuse.search(search);
 
     return filter.map(({ item }) => item);
+  };
+
+  const handleEditPage = (event, id) => {
+    event.stopPropagation();
+    Router.push({
+      pathname: '/createObject',
+      query: { id },
+    });
   };
 
   const renderItens = (itens) => {
@@ -101,38 +100,51 @@ export default function Dashboard() {
           <Collapse
             key={object._id}
             title={
-              <Col>
-                <Row align="center">
-                  <Text
-                    b
-                    size={20}
-                    css={{ tt: 'capitalize', color: '$accents8' }}
-                  >
-                    {object.name}
-                  </Text>
-                  <Text
-                    size={16}
-                    css={{
-                      marginLeft: '10px !important',
-                      color: '$accents6',
-                    }}
-                  >
-                    {`#${object.code}`}
-                  </Text>
+              <Row justify="space-between" align="center">
+                <Col>
+                  <Row>
+                    <Text
+                      b
+                      size={20}
+                      css={{ tt: 'capitalize', color: '$accents8' }}
+                    >
+                      {object.name}
+                    </Text>
+                    <Text
+                      size={16}
+                      css={{
+                        marginLeft: '10px !important',
+                        color: '$accents6',
+                      }}
+                    >
+                      {`#${object.code}`}
+                    </Text>
+                  </Row>
+                  <Row>
+                    <Text size={16} css={{ color: '$accents6' }}>
+                      {`Criado por ${object.createdBy} em ${moment(
+                        object.createdAt
+                      ).format('LL')}`}
+                    </Text>
+                  </Row>
+                </Col>
+                <Row
+                  justify="flex-end"
+                  align="center"
+                  css={{ width: 'auto' }}
+                  className={styles.containerIconsAction}
+                >
+                  <Tooltip content={'Apagar'} rounded color="error">
+                    <MdDelete className={styles.iconAction} />
+                  </Tooltip>
+                  <Tooltip content={'Editar'} rounded color="primary">
+                    <MdEdit
+                      onClick={(event) => handleEditPage(event, object._id)}
+                      className={styles.iconAction}
+                    />
+                  </Tooltip>
                 </Row>
-                <Row>
-                  <Text size={16} css={{ color: '$accents6' }}>
-                    {`Criado por ${object.createdBy} em ${moment(
-                      object.createdAt
-                    ).format('LL')}`}
-                  </Text>
-                </Row>
-                <Row>
-                  <Text size={16} css={{ color: '$accents6' }}>
-                    {}
-                  </Text>
-                </Row>
-              </Col>
+              </Row>
             }
           >
             <ShowObject

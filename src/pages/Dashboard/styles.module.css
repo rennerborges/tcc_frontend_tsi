@@ -8,3 +8,13 @@
   margin-left: 5px;
   color: var(--nextui-colors-accents8);
 }
+.containerIconsAction {
+  margin-right: 10px !important;
+}
+
+.iconAction {
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 20px;
+  color: var(--nextui-colors-accents6);
+}
