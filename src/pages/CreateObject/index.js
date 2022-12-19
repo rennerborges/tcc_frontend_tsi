@@ -73,13 +73,19 @@ export default function CreateObject({ id }) {
       }
 
       try {
-        JSON.parse(object);
+        const data = JSON.parse(object);
+        if (!Object.values(data).length) {
+          throw 'Objeto sem chave';
+        }
       } catch (error) {
         throw 'Informe um Objeto válido';
       }
 
       try {
-        JSON.parse(schema);
+        const data = JSON.parse(schema);
+        if (!Object.values(data).length) {
+          throw 'Objeto sem chave';
+        }
       } catch (error) {
         throw 'Informe um Model válido';
       }
