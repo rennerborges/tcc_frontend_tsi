@@ -11,7 +11,7 @@ import Nav from '../../components/NavBar';
 import styles from './styles.module.css';
 import { useEffect, useState } from 'react';
 import { MdSearch, MdEdit, MdDelete } from 'react-icons/md';
-import { GetObjects } from '../../api/index.js';
+import { DeleteObject, GetObjects } from '../../api/index.js';
 import Router, { useRouter } from 'next/router.js';
 import { toast } from 'react-toastify';
 import moment from 'moment';
@@ -92,9 +92,42 @@ export default function Dashboard() {
     setIdDelete(id);
   };
 
-  const deleteObject = (confirm) => {
+  const deleteObject = async (confirm) => {
     console.log(confirm);
     if (!confirm) {
+      return setIdDelete(0);
+    }
+
+    try {
+      setLoading(true);
+
+      await DeleteObject(idDelete);
+
+      toast.success(`Objeto deletado com sucesso!`, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+
+      getObjects();
+    } catch (error) {
+      toast.error(error.message, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    } finally {
+      setLoading(false);
       setIdDelete(0);
     }
   };

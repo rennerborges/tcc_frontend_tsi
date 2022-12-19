@@ -60,8 +60,13 @@ export const Get = async (url) => {
   return BaseRequest('GET', url);
 };
 
+export const Delete = async (url) => {
+  return BaseRequest('DELETE', url);
+};
+
 export default {
   Post,
   Patch,
   Get,
+  Delete,
 };

@@ -1,4 +1,4 @@
-import { Get, Patch, Post } from './base-api';
+import { Delete, Get, Patch, Post } from './base-api';
 
 export const LoginRequest = async (body) => {
   return Post('/login', body);
@@ -20,10 +20,15 @@ export const UpdateObject = async (id, body) => {
   return Patch(`/objects/${id}`, body);
 };
 
+export const DeleteObject = async (id) => {
+  return Delete(`/objects/${id}`);
+};
+
 export default {
   LoginRequest,
   GetObjects,
   GetObjectById,
   CreateObject,
   UpdateObject,
+  DeleteObject,
 };
