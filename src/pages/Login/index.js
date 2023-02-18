@@ -47,11 +47,12 @@ export default function LoginPage() {
         <div className={styles.card}>
           <Timer />
           <Text className={styles.title} css={{ color: '$white' }}>
-            Start your <br /> journey with us
+            Start your
+            <br /> NuPPGIN Dashboard
           </Text>
           <Text className={styles.subtitle} css={{ color: '$white' }}>
-            Discovery the worlds best community of freelances and bussiness
-            owners.
+            Descubra o Dashboard do Núcleo de Pesquisa em Processamento Gráfico
+            e Interação Natural.
           </Text>
         </div>
       </section>
@@ -90,7 +91,6 @@ export default function LoginPage() {
             color="error"
             type="password"
             label="Senha"
-            status="error"
             onError={true}
           />
 
